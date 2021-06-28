@@ -41,7 +41,7 @@ const MyApp: React.FC = () => {
               <IonIcon icon={home}/>
               <IonLabel>Home</IonLabel>
             </IonTabButton>
-            <IonTabButton tab='setting' href='/my/setting'>
+            <IonTabButton tab='setting' href='/my/settings'>
               <IonIcon icon={settings}/>
               <IonLabel>Settings</IonLabel>
             </IonTabButton>

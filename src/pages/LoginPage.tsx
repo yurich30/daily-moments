@@ -8,31 +8,33 @@ import {
     IonList,
     IonItem,
     IonInput,
-    IonLabel
+    IonLabel,
+    IonText,
+    IonLoading
   } from '@ionic/react';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router';
-import { PassThrough } from 'stream';
 import { useAuth } from '../auth';
 import { auth } from '../firebase'
 
-
-interface Props { 
-  setLoggedIn: () => void
-}
-  
-  
-  const LoginPage: React.FC<Props> = ({ setLoggedIn }) => {
+  const LoginPage: React.FC = () => {
 
     const {loggedIn} = useAuth()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [status ,setStatus] = useState({loading: false, error: false})
 
     const handleLogin = async () => {
-      const credential = await auth.signInWithEmailAndPassword(email, password)
-      console.log(credential);
-      setLoggedIn()
+      try {
+        setStatus({loading: true, error: false})
+        const credential = await auth.signInWithEmailAndPassword(email, password)
+        setStatus({loading: false, error: false})
+        console.log(credential);
+      } catch (error) {
+        console.log(error.message);
+        setStatus({loading: false, error: true})
+      }
     }
 
     if(loggedIn){
@@ -56,6 +58,8 @@ interface Props {
               <IonInput type='password' value={password} onIonChange={(e) => setPassword(e.detail.value)}/>
             </IonItem>
           </IonList>
+          <IonLoading isOpen={status.loading}/>
+          {status.error && <IonText color='danger'>Invalid credentials</IonText>}
 					<IonButton onClick={handleLogin} expand='block'>Login</IonButton>
         </IonContent>
       </IonApp>
