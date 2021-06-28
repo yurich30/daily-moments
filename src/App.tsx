@@ -13,6 +13,7 @@ import { auth } from './firebase'
 import MyApp from './MyApp'
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
+import RegisterPage from './pages/RegisterPage';
 
 
 
@@ -34,6 +35,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path='/login'>
               <LoginPage />
+            </Route>
+            <Route exact path='/register'>
+              <RegisterPage />
             </Route>
             <Route  path='/my'>
               <MyApp />
