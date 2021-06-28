@@ -7,21 +7,38 @@ import {
 		IonList,
 		IonItem,
     IonButtons,
-    IonBackButton
+    IonBackButton,
+    IonIcon,
+    IonButton
   } from '@ionic/react';
-import React from 'react';
-import { useParams } from 'react-router';
-import { entries } from '../data';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { useAuth } from '../auth';
+import { firestore } from '../firebase';
+import { Entry, Params } from '../types';
+import {trash as trashIcon} from 'ionicons/icons'
+import { formatDate } from '../utils';
   
   const EntryPage: React.FC = () => {
 
-    type Params = {
-      id:string
-    }
-
     const { id } = useParams<Params>()
+    const { userId } = useAuth()
+    const [entry, setEntry] = useState<Entry>()
+    const history = useHistory()
 
-    const entry = entries.find((entry) => entry.id === id) 
+    useEffect(() => {
+      const entryRef = firestore.collection('users').doc(userId).collection('entries').doc(id)
+      entryRef.get().then((doc) => {
+        const entry = {id: doc.id, ...doc.data()} as Entry
+        setEntry(entry)
+      })
+    }, [id])
+
+    const handleDelete = () => {
+      const entryRef = firestore.collection('users').doc(userId).collection('entries').doc(id)
+      entryRef.delete()
+      history.goBack()
+    }
 
     return (
       <IonApp>
@@ -31,12 +48,18 @@ import { entries } from '../data';
               <IonBackButton /> 
               {/* doesn`t work */}
             </IonButtons>
-            <IonTitle>{entry.title}</IonTitle>
+            <IonTitle>{formatDate(entry.date)}</IonTitle>
+            <IonButtons slot='end'>
+              <IonButton onClick={handleDelete}>
+                <IonIcon slot='icon-only' icon={trashIcon}/>
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
 					<IonList>
-						<IonItem>{entry.description}</IonItem>
+						<IonItem>{entry?.title}</IonItem>
+						<IonItem>{entry?.description}</IonItem>
 					</IonList>
         </IonContent>
       </IonApp>

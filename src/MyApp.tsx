@@ -17,6 +17,7 @@ import HomePage from './pages/HomePage'
 import SettingPage from './pages/SettingPage'
 import EntryPage from './pages/EntryPage'
 import { useAuth } from './auth';
+import AddEntryPage from './pages/AddEntryPage';
 
 const MyApp: React.FC = () => {
   const {loggedIn} = useAuth()
@@ -32,8 +33,11 @@ const MyApp: React.FC = () => {
             <Route exact path='/my/settings'>
               <SettingPage />
             </Route>
-            <Route exact path='/my/entries/:id'>
+            <Route exact path='/my/entries/view/:id'>
               <EntryPage />
+            </Route>
+            <Route exact path='/my/entries/add'>
+              <AddEntryPage />
             </Route>
           </IonRouterOutlet>
           <IonTabBar slot='bottom'>
