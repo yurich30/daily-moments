@@ -8,7 +8,7 @@ import {
 } from '@ionic/react-router'
 import React, { useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router';
-import { AuthContext  } from './auth'
+import { AuthContext, useAuthInit  } from './auth'
 import { auth } from './firebase'
 import MyApp from './MyApp'
 import LoginPage from './pages/LoginPage';
@@ -19,18 +19,14 @@ import RegisterPage from './pages/RegisterPage';
 
 const App: React.FC = () => {
 
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => setAuthState({loading: false,loggedIn: Boolean(user)}))
-  }, [])
+  const {loading, auth} = useAuthInit()
 
-  const [authSate, setAuthState] = useState({loading: true, loggedIn: false})
-
-  if(authSate.loading){
+  if(loading){
     return <IonLoading isOpen/>
   }
   return (
     <IonApp>
-      <AuthContext.Provider value={{ loggedIn: authSate.loggedIn }}>
+      <AuthContext.Provider value={ auth }>
         <IonReactRouter>
           <Switch>
             <Route exact path='/login'>
