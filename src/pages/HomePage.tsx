@@ -9,7 +9,9 @@ import {
     IonFab,
     IonFabButton,
     IonIcon,
-    IonLabel
+    IonLabel,
+    IonThumbnail,
+    IonImg,
   } from '@ionic/react';
 import {add as addIcon} from 'ionicons/icons'
 import React, { useEffect, useState } from 'react';
@@ -50,6 +52,9 @@ import { formatDate } from '../utils';
 							key={entry.id}
 							routerLink={`/my/entries/view/${entry.id}`}
 						>
+              <IonThumbnail slot='end'>
+                <IonImg src={entry.photoURL}/>
+              </IonThumbnail>
 							<IonLabel>
                 <h2>{entry.title}</h2>
 							  <h3>{formatDate(entry.date)}</h3>

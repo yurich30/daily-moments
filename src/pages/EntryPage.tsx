@@ -48,7 +48,7 @@ import { formatDate } from '../utils';
               <IonBackButton /> 
               {/* doesn`t work */}
             </IonButtons>
-            <IonTitle>{formatDate(entry.date)}</IonTitle>
+            <IonTitle>{formatDate(entry?.date)}</IonTitle>
             <IonButtons slot='end'>
               <IonButton onClick={handleDelete}>
                 <IonIcon slot='icon-only' icon={trashIcon}/>
@@ -59,6 +59,7 @@ import { formatDate } from '../utils';
         <IonContent className="ion-padding">
 					<IonList>
 						<IonItem>{entry?.title}</IonItem>
+            <img src={entry?.photoURL} />
 						<IonItem>{entry?.description}</IonItem>
 					</IonList>
         </IonContent>

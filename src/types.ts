@@ -5,6 +5,7 @@ export type Params = {
 export type Entry = {
     id: string
     date: string
+    photoURL: string
     title: string
     description: string
   }
